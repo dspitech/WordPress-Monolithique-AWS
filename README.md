@@ -4,6 +4,12 @@ Ce projet permet de déployer automatiquement un environnement **WordPress** com
 
 L’automatisation est réalisée à l’aide de **scripts PowerShell** s’appuyant sur l’**AWS CLI**.
 
+## Auteur
+
+👤 **LO Pape**  
+🎓 Domaine : Cloud Computing  
+💻 GitHub : [dspitech](https://github.com/dspitech)
+
 ---
 
 ## 1. Architecture et périmètre
