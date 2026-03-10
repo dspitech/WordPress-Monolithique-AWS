@@ -1,0 +1,7 @@
+PROJET WORDPRESS RDS - DSPI-TECH
+--------------------------------
+Identifiants par défaut :
+DB Name : wordpress_db
+Admin : wp_db_admin
+Pass : P@ssw0rdSecure2026!
+Region : eu-west-3
