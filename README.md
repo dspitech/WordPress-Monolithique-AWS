@@ -238,7 +238,7 @@ Adaptez `DBInstanceId` et `ProjectTag` dans le script pour cibler l’environnem
 
 ---
 
-## 8. Nettoyage complet (Retour à 0 €)
+## 8. Nettoyage 
 
 Pour supprimer toutes les ressources créées par `01_Deploy_Infra.ps1`, exécutez :
 
@@ -292,27 +292,6 @@ aws s3 ls | Select-String "wp-free-storage"
 ![image](https://hackmd.io/_uploads/H1PdaT6Fbg.png)
 
 
-
----
-
-## 9. Bonnes pratiques de sécurité
-
-- **Ne pas utiliser les mots de passe par défaut en production.**
-- Stocker les mots de passe en clair dans les scripts ou fichiers texte uniquement pour des démos/labs jetables.
-- Pour un environnement réel :
-  - Utiliser **AWS Secrets Manager** ou au minimum **SSM Parameter Store** avec chiffrement KMS.
-  - Restreindre les **Security Groups** (plutôt qu’ouvrir 0.0.0.0/0, limiter aux IPs ou au VPN).
-  - Limiter les permissions IAM au strict minimum (principe du moindre privilège).
-
----
-
-## 10. Coûts et limites Free Tier
-
-- Les types **t3.micro** (EC2) et **db.t3.micro** (RDS) sont **éligibles au Free Tier** sous conditions de votre compte AWS (nouveau compte, quotas, heures mensuelles, etc.).
-- Les buckets **S3** et le trafic sortant restent soumis aux limites Free Tier (stockage, requêtes, data transfer).
-- **Vérifiez toujours vos coûts dans la console AWS** (`Billing / Cost Explorer`), surtout si vous gardez l’environnement sur une longue durée.
-
-Le script `03_Cleanup.ps1` est conçu pour **supprimer automatiquement** toutes les ressources créées et ainsi limiter au maximum les coûts résiduels.
 
 ---
 
