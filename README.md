@@ -1,4 +1,4 @@
-## Déploiement WordPress Cloud-Native 100% Free Tier sur AWS (PowerShell)
+## Déploiement WordPress (architecture monolithique) sur AWS via PowerShell
 
 Ce projet permet de déployer automatiquement un environnement **WordPress** complet sur **AWS** dans une architecture monolithique.
 
