@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Déploiement WordPress Cloud-Native 100% Free Tier (SANS CloudFront).
+    Deploiement WordPress Cloud-Native 100% Free Tier (SANS CloudFront).
     Services : EC2 (t3.micro), RDS (db.t3.micro), S3, Parameter Store, IAM.
 #>
 
-# --- 1. CONFIGURATION ÉCONOMIQUE ---
+# --- 1. CONFIGURATION ECONOMIQUE ---
 $Config = @{
     Region       = "eu-west-3" # Paris
     ProjectName  = "WP-Free-Lab"
@@ -12,15 +12,15 @@ $Config = @{
     DBName       = "wordpressdb"
     MasterUser   = "admin"
     MasterPass   = "PassSafe2026" 
-    InstanceType = "t3.micro"     # Éligible Free Tier
-    DBClass      = "db.t3.micro"  # Éligible Free Tier
+    InstanceType = "t3.micro"     # Eligible Free Tier
+    DBClass      = "db.t3.micro"  # Eligible Free Tier
     BucketName   = "wp-free-storage-$(Get-Random)"
 }
 
 $GlobalTimer = [System.Diagnostics.Stopwatch]::StartNew()
 
 try {
-    Write-Host "`n[1/5] RÉSEAU ET SÉCURITÉ (GRATUIT)" -ForegroundColor Cyan
+    Write-Host "`n[1/5] RESEAU ET SECURITE (GRATUIT)" -ForegroundColor Cyan
     $VpcId = (aws ec2 describe-vpcs --filters "Name=is-default,Values=true" --query "Vpcs[0].VpcId" --output text --region $Config.Region)
 
     # Security Group Web
@@ -32,14 +32,14 @@ try {
     $DBSGId = (aws ec2 create-security-group --group-name "WP-DB-SG" --description "SG RDS Backend" --vpc-id $VpcId --query "GroupId" --output text --region $Config.Region)
     aws ec2 authorize-security-group-ingress --group-id $DBSGId --protocol tcp --port 3306 --source-group $WebSGId --region $Config.Region
 
-    Write-Host "`n[2/5] STOCKAGE S3 ET PARAMÈTRES (GRATUIT)" -ForegroundColor Cyan
-    # S3 (Gratuit jusqu'à 5 Go)
+    Write-Host "`n[2/5] STOCKAGE S3 ET PARAMETRES (GRATUIT)" -ForegroundColor Cyan
+    # S3 (Gratuit jusqu'a 5 Go)
     aws s3 mb "s3://$($Config.BucketName)" --region $Config.Region
     
     # Remplacement Secrets Manager par Parameter Store (TOTALEMENT GRATUIT)
     aws ssm put-parameter --name "/wp/db/password" --value $Config.MasterPass --type "SecureString" --overwrite --region $Config.Region
 
-    # Rôle IAM pour l'accès S3
+    # Role IAM pour l'acces S3
     $RoleName = "WP-Free-S3-Role"
     $Policy = '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
     aws iam create-role --role-name $RoleName --assume-role-policy-document $Policy 2>$null
@@ -98,11 +98,11 @@ systemctl enable --now httpd
             --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$($Config.ProjectName)}]" `
             --query "Instances[0].InstanceId" --output text --region $Config.Region)
 
-    Write-Host "`n[5/5] RÉSUMÉ FINAL" -ForegroundColor Green
+    Write-Host "`n[5/5] RESUME FINAL" -ForegroundColor Green
     $PublicIP = (aws ec2 describe-instances --instance-ids $InstanceId --query "Reservations[0].Instances[0].PublicIpAddress" --output text --region $Config.Region)
     Write-Host "--------------------------------------------------------"
     Write-Host " URL WORDPRESS   : http://$PublicIP" -ForegroundColor Cyan
-    Write-Host " BUCKET MÉDIAS   : s3://$($Config.BucketName)"
+    Write-Host " BUCKET MEDIAS   : s3://$($Config.BucketName)"
     Write-Host " TEMPS TOTAL     : $([math]::Round($GlobalTimer.Elapsed.TotalMinutes, 2)) min"
     Write-Host "--------------------------------------------------------"
 
