@@ -1,21 +1,20 @@
 <#
 .SYNOPSIS
-    Récupère les informations de connexion du projet WordPress (Version FREE TIER).
+    Recuperation les informations de connexion du projet .
 #>
 
-# --- CONFIGURATION (Alignée sur ton script de déploiement) ---
+# --- CONFIGURATION 
 $Config = @{
-    DBInstanceId = "rds-wp-free"  # Modifié : correspond à ton déploiement
-    ProjectTag   = "WP-Free-Lab"   # Modifié : correspond à ton déploiement
+    DBInstanceId = "rds-wp-free"  # Correspond a ton deploiement
+    ProjectTag   = "WP-Free-Lab"   # Correspond a ton deploiement
     Region       = "eu-west-3"
     MasterPass   = "PassSafe2026" 
 }
 
 try {
-    Write-Host "`n--- RÉCUPÉRATION DES PARAMÈTRES DE CONNEXION (FREE TIER) ---" -ForegroundColor Cyan
+    Write-Host "`n--- RECUPERATION DES PARAMETRES DE CONNEXION (FREE TIER) ---" -ForegroundColor Cyan
 
-    # 1. Récupération des infos RDS via AWS CLI
-    # On utilise --query pour être plus robuste que le passage par ConvertFrom-Json sur tout l'objet
+    # 1. Recuperation des infos RDS via AWS CLI
     $RDSInfo = aws rds describe-db-instances --db-instance-identifier $Config.DBInstanceId --region $Config.Region --output json | ConvertFrom-Json
     
     $Endpoint = $RDSInfo.DBInstances[0].Endpoint.Address
@@ -23,7 +22,7 @@ try {
     $DBUser   = $RDSInfo.DBInstances[0].MasterUsername
     $DBStatus = $RDSInfo.DBInstances[0].DBInstanceStatus
 
-    # 2. Récupération de l'IP Publique EC2
+    # 2. Recuperation de l'IP Publique EC2
     $PublicIP = (aws ec2 describe-instances `
         --filters "Name=tag:Name,Values=$($Config.ProjectTag)" "Name=instance-state-name,Values=running" `
         --query "Reservations[0].Instances[0].PublicIpAddress" `
@@ -31,7 +30,7 @@ try {
 
     # 3. AFFICHAGE
     Write-Host "`n========================================================" -ForegroundColor Gray
-    Write-Host "  INFOS BASE DE DONNÉES (RDS) - Statut: $DBStatus" -ForegroundColor Yellow
+    Write-Host "  INFOS BASE DE DONNEES (RDS) - Statut: $DBStatus" -ForegroundColor Yellow
     Write-Host "--------------------------------------------------------"
     Write-Host " ENDPOINT     : " -NoNewline; Write-Host $Endpoint -ForegroundColor Cyan
     Write-Host " NOM DB       : " -NoNewline; Write-Host $DBName -ForegroundColor White
@@ -41,7 +40,7 @@ try {
     Write-Host "`n  INFOS SERVEUR WEB (EC2)" -ForegroundColor Yellow
     Write-Host "--------------------------------------------------------"
     if ($PublicIP -eq "None" -or [string]::IsNullOrEmpty($PublicIP)) {
-        Write-Host " IP PUBLIQUE  : " -NoNewline; Write-Host "Non disponible (vérifiez si l'instance tourne)" -ForegroundColor Red
+        Write-Host " IP PUBLIQUE  : " -NoNewline; Write-Host "Non disponible (verifiez si l'instance tourne)" -ForegroundColor Red
     }
     else {
         Write-Host " IP PUBLIQUE  : " -NoNewline; Write-Host $PublicIP -ForegroundColor Cyan
@@ -51,5 +50,5 @@ try {
 
 }
 catch {
-    Write-Host "[ERREUR] Impossible de récupérer les données. L'instance RDS '$($Config.DBInstanceId)' existe-t-elle bien ?" -ForegroundColor Red
+    Write-Host "[ERREUR] Impossible de recuperer les donnees. L'instance RDS '$($Config.DBInstanceId)' existe-t-elle bien ?" -ForegroundColor Red
 }
