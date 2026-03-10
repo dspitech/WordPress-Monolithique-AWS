@@ -114,6 +114,7 @@ Les scripts utilisent des objets de configuration internes. Les éléments princ
 git clone https://github.com/dspitech/WordPress-Monolithique-AWS.git
 cd Projet-WordPress-AWS
 ```
+
 ![image](https://hackmd.io/_uploads/Sy1T7aaKbx.png)
 
 2. **(Optionnel) Création automatique de la structure locale**  
@@ -135,13 +136,17 @@ Depuis PowerShell (en tant qu'administrateur) (dans le dossier du projet) :
 .\01_Deploy_Infra.ps1
 ```
 ![image](https://hackmd.io/_uploads/rkwmNaaK-g.png)
+
 ![image](https://hackmd.io/_uploads/S1bBEpTY-e.png)
+
 ![image](https://hackmd.io/_uploads/HJZvHaatZl.png)
 
 - EC2
+
 ![image](https://hackmd.io/_uploads/rySnapaKbl.png)
 
 - Groupe de sécurité
+-
 ![image](https://hackmd.io/_uploads/S1mAapTt-l.png)
 
 ![image](https://hackmd.io/_uploads/rJ0kAapK-e.png)
@@ -149,10 +154,12 @@ Depuis PowerShell (en tant qu'administrateur) (dans le dossier du projet) :
 ![image](https://hackmd.io/_uploads/ByoWR66YZl.png)
 
 - S3
+
 ![image](https://hackmd.io/_uploads/HJcmCaatZe.png)
 
 
 - RDS
+
 ![image](https://hackmd.io/_uploads/S1aHATaFWl.png)
 
 ![image](https://hackmd.io/_uploads/HJ3DRaaY-l.png)
@@ -191,6 +198,7 @@ Exécution :
 ```powershell
 .\02_Get_Credentials.ps1
 ```
+
 ![image](https://hackmd.io/_uploads/BJn9Daptbg.png)
 
 
@@ -209,11 +217,17 @@ Ce script affiche notamment :
 Adaptez `DBInstanceId` et `ProjectTag` dans le script pour cibler l’environnement voulu.
 
 ## Accès au site 
+
 ![image](https://hackmd.io/_uploads/SJK9_aatZx.png)
+
 ![image](https://hackmd.io/_uploads/rJqCdaTFZg.png)
+
 ![image](https://hackmd.io/_uploads/HkvJtT6KWx.png)
+
 ![image](https://hackmd.io/_uploads/BJsgYapKWg.png)
+
 ![image](https://hackmd.io/_uploads/H1gfKTTF-e.png)
+
 ![image](https://hackmd.io/_uploads/HJ1XtTaK-l.png)
 
 ---
@@ -237,6 +251,7 @@ Le script réalise les actions suivantes :
 - Suppression des **Security Groups** `WP-DB-SG` et `WP-Web-SG`.
 
 En fin de script, un message confirme que le **compte est propre** et qu’il ne reste plus de ressources facturables pour ce labo.
+
 ![image](https://hackmd.io/_uploads/BJnR5T6F-x.png)
 
 ### Vérification
@@ -245,6 +260,7 @@ En fin de script, un message confirme que le **compte est propre** et qu’il ne
 aws ec2 describe-instances --filters "Name=tag:Name,Values=WP-Free-Lab" "Name=instance-state-name,Values=running,stopped,pending" --query "Reservations[].Instances[].InstanceId" --output text --region eu-west-3
 ```
 ![image](https://hackmd.io/_uploads/B1cQ2TptWx.png)
+
 ![image](https://hackmd.io/_uploads/rykIsppK-g.png)
 
 - Vérifier la base de données
@@ -252,6 +268,7 @@ aws ec2 describe-instances --filters "Name=tag:Name,Values=WP-Free-Lab" "Name=in
 aws rds describe-db-instances --db-instance-identifier rds-wp-free --query "DBInstances[].DBInstanceStatus" --output text --region eu-west-3
 ```
 ![image](https://hackmd.io/_uploads/HkAsnapKWl.png)
+
 ![image](https://hackmd.io/_uploads/SJXvj6Tt-x.png)
 
 - Vérifier le Bucket S3
@@ -259,10 +276,13 @@ aws rds describe-db-instances --db-instance-identifier rds-wp-free --query "DBIn
 aws s3 ls | Select-String "wp-free-storage"
 ```
 ![image](https://hackmd.io/_uploads/HJUGpTpKZl.png)
+
 ![image](https://hackmd.io/_uploads/rygFs6ptZe.png)
 
 - Vérifier les Security Groups
+
 ![image](https://hackmd.io/_uploads/rJTas6at-l.png)
+
 ![image](https://hackmd.io/_uploads/H1PdaT6Fbg.png)
 
 
