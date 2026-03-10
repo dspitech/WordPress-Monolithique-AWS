@@ -1,12 +1,14 @@
 ## Déploiement WordPress Cloud-Native 100% Free Tier sur AWS (PowerShell)
 
-Ce projet permet de déployer automatiquement un environnement **WordPress** complet sur **AWS**, optimisé pour le **Free Tier** (sans CloudFront), puis de récupérer les identifiants de connexion et de nettoyer proprement toutes les ressources afin de revenir à **0 €**.
+Ce projet permet de déployer automatiquement un environnement **WordPress** complet sur **AWS** dans une architecture monolithique.
 
 L’automatisation est réalisée à l’aide de **scripts PowerShell** s’appuyant sur l’**AWS CLI**.
 
 ---
 
 ## 1. Architecture et périmètre
+
+![Arcchitecture_monolithique](https://hackmd.io/_uploads/BkYARcTKbx.png)
 
 Le déploiement réalisé par `01_Deploy_Infra.ps1` provisionne les ressources suivantes (en région `eu-west-3`, Paris) :
 
@@ -224,27 +226,5 @@ Le script `03_Cleanup.ps1` est conçu pour **supprimer automatiquement** toutes 
 
 ---
 
-## 11. Contributions et évolutions possibles
 
-Pistes d’amélioration du projet :
-
-- Ajout d’une version avec **CloudFront** et **ACM** (certificats SSL) pour sécuriser le site en HTTPS.
-- Paramétrage avancé de **WordPress** (plugins, thèmes, sauvegardes vers S3, etc.).
-- Support multi-environnements (DEV/QA/PROD) via variables et fichiers de configuration externes.
-- Intégration dans un pipeline **CI/CD** (GitHub Actions, GitLab CI, etc.) pour exécuter les scripts automatiquement.
-
-Les contributions (PR, issues) sont les bienvenues si ce dépôt est public sur GitHub.
-
----
-
-## 12. Avertissement
-
-Ce projet est fourni à des fins **éducatives et de démonstration**.  
-L’utilisation en production nécessite :
-
-- Un durcissement des paramètres de sécurité.
-- Une gestion sérieuse des identifiants et secrets.
-- Une revue des coûts, de la haute disponibilité et des sauvegardes.
-
-Utilisez-le comme base de labo pour expérimenter un déploiement **WordPress Cloud-Native sur AWS Free Tier**.
 
